@@ -39,6 +39,9 @@
 #include "atom.h"
 #include "amdgpu_atombios.h"
 #include "amd_pcie.h"
+#ifdef CONFIG_DRM_AMDGPU_SI
+#include "si.h"
+#endif
 #ifdef CONFIG_DRM_AMDGPU_CIK
 #include "cik.h"
 #endif
@@ -49,6 +52,10 @@ static int amdgpu_debugfs_regs_init(struct amdgpu_device *adev);
 static void amdgpu_debugfs_regs_cleanup(struct amdgpu_device *adev);
 
 static const char *amdgpu_asic_name[] = {
+    "OLAND",
+    "VERDE",
+    "PITCAIRN",
+    "TAHITI",
 	"BONAIRE",
 	"KAVERI",
 	"KABINI",
@@ -342,11 +349,20 @@ void amdgpu_pci_config_reset(struct amdgpu_device *adev)
  */
 static int amdgpu_doorbell_init(struct amdgpu_device *adev)
 {
+    /* no doorbel on SI */
+    if(adev->asic_type < CHIP_BONAIRE)
+    {
+        adev->doorbell.base = 0;
+        adev->doorbell.size = 0;
+        adev->doorbell.num_doorbells = 0;
+        return 0;
+    }
+
 	/* doorbell bar mapping */
 	adev->doorbell.base = pci_resource_start(adev->pdev, 2);
 	adev->doorbell.size = pci_resource_len(adev->pdev, 2);
 
-	adev->doorbell.num_doorbells = min_t(u32, adev->doorbell.size / sizeof(u32), 
+	adev->doorbell.num_doorbells = min_t(u32, adev->doorbell.size / sizeof(u32),
 					     AMDGPU_DOORBELL_MAX_ASSIGNMENT+1);
 	if (adev->doorbell.num_doorbells == 0)
 		return -EINVAL;
@@ -1202,6 +1218,18 @@ static int amdgpu_early_init(struct amdgpu_device *adev)
 			return r;
 		break;
 #endif
+#ifdef CONFIG_DRM_AMDGPU_SI
+	case CHIP_OLAND:
+	case CHIP_VERDE:
+	case CHIP_TAHITI:
+	case CHIP_PITCAIRN:
+		adev->family = AMDGPU_FAMILY_SI;
+
+		r = si_set_ip_blocks(adev);
+		if (r)
+			return r;
+		break;
+#endif
 	default:
 		/* FIXME: not supported yet */
 		return -EINVAL;
@@ -1448,6 +1476,12 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	adev->didt_wreg = &amdgpu_invalid_wreg;
 	adev->audio_endpt_rreg = &amdgpu_block_invalid_rreg;
 	adev->audio_endpt_wreg = &amdgpu_block_invalid_wreg;
+    adev->cg_rreg = &amdgpu_invalid_rreg;
+    adev->cg_wreg = &amdgpu_invalid_wreg;
+    adev->pif_phy0_rreg = &amdgpu_invalid_rreg;
+	adev->pif_phy0_wreg = &amdgpu_invalid_wreg;
+	adev->pif_phy1_rreg = &amdgpu_invalid_rreg;
+	adev->pif_phy1_wreg = &amdgpu_invalid_wreg;
 
 	DRM_INFO("initializing kernel modesetting (%s 0x%04X:0x%04X 0x%04X:0x%04X 0x%02X).\n",
 		 amdgpu_asic_name[adev->asic_type], pdev->vendor, pdev->device,
@@ -1475,9 +1509,19 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	spin_lock_init(&adev->uvd_ctx_idx_lock);
 	spin_lock_init(&adev->didt_idx_lock);
 	spin_lock_init(&adev->audio_endpt_idx_lock);
+    spin_lock_init(&adev->cg_idx_lock);
+    spin_lock_init(&adev->pif_idx_lock);
 
-	adev->rmmio_base = pci_resource_start(adev->pdev, 5);
-	adev->rmmio_size = pci_resource_len(adev->pdev, 5);
+    if (adev->family >= CHIP_BONAIRE) {
+        adev->rmmio_base = pci_resource_start(adev->pdev, 5);
+        adev->rmmio_size = pci_resource_len(adev->pdev, 5);
+    } else {
+        adev->rmmio_base = pci_resource_start(adev->pdev, 2);
+        adev->rmmio_size = pci_resource_len(adev->pdev, 2);
+    }
+
+    /* Added for debug */ printk(KERN_ALERT "before ioremap register mmio base: 0x%08X\n", (uint32_t)adev->rmmio_base);
+    /* Added for debug */ printk(KERN_ALERT "before ioremap register mmio size: %u\n", (unsigned)adev->rmmio_size);
 	adev->rmmio = ioremap(adev->rmmio_base, adev->rmmio_size);
 	if (adev->rmmio == NULL) {
 		return -ENOMEM;

@@ -29,6 +29,7 @@
 * Supported GPU families (aligned with amdgpu_drm.h)
 */
 #define AMD_FAMILY_UNKNOWN              0
+#define AMD_FAMILY_SI                   100 /* Oland, Cape Verde, Pitcairn, Tahiti */
 #define AMD_FAMILY_CI                   120 /* Bonaire, Hawaii */
 #define AMD_FAMILY_KV                   125 /* Kaveri, Kabini, Mullins */
 #define AMD_FAMILY_VI                   130 /* Iceland, Tonga */
@@ -38,7 +39,12 @@
  * Supported ASIC types
  */
 enum amd_asic_type {
-	CHIP_BONAIRE = 0,
+    CHIP_OLAND,
+    CHIP_VERDE,
+    CHIP_PITCAIRN,
+    CHIP_TAHITI,
+    CHIP_HAINAN,
+	CHIP_BONAIRE,
 	CHIP_KAVERI,
 	CHIP_KABINI,
 	CHIP_HAWAII,

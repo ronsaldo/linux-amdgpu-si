@@ -2001,6 +2001,16 @@ struct amdgpu_device {
 	spinlock_t didt_idx_lock;
 	amdgpu_rreg_t			didt_rreg;
 	amdgpu_wreg_t			didt_wreg;
+	/* protects concurrent old evergreen CG register access */
+	spinlock_t cg_idx_lock;
+	amdgpu_rreg_t			cg_rreg;
+	amdgpu_wreg_t			cg_wreg;
+	/* protects concurrent old evergreen CG register access */
+	spinlock_t pif_idx_lock;
+	amdgpu_rreg_t			pif_phy0_rreg;
+	amdgpu_wreg_t			pif_phy0_wreg;
+	amdgpu_rreg_t			pif_phy1_rreg;
+	amdgpu_wreg_t			pif_phy1_wreg;
 	/* protects concurrent ENDPOINT (audio) register access */
 	spinlock_t audio_endpt_idx_lock;
 	amdgpu_block_rreg_t		audio_endpt_rreg;
@@ -2145,6 +2155,12 @@ static inline struct amdgpu_fence *to_amdgpu_fence(struct fence *f)
 #define WREG32_UVD_CTX(reg, v) adev->uvd_ctx_wreg(adev, (reg), (v))
 #define RREG32_DIDT(reg) adev->didt_rreg(adev, (reg))
 #define WREG32_DIDT(reg, v) adev->didt_wreg(adev, (reg), (v))
+#define RREG32_CG(reg) adev->cg_rreg(adev, (reg))
+#define WREG32_CG(reg, v) adev->cg_wreg(adev, (reg), (v))
+#define RREG32_PIF_PHY0(reg) adev->pif_phy0_rreg(adev, (reg))
+#define WREG32_PIF_PHY0(reg, v) adev->pif_phy0_wreg(adev, (reg), (v))
+#define RREG32_PIF_PHY1(reg) adev->pif_phy1_rreg(adev, (reg))
+#define WREG32_PIF_PHY1(reg, v) adev->pif_phy1_wreg(adev, (reg), (v))
 #define RREG32_AUDIO_ENDPT(block, reg) adev->audio_endpt_rreg(adev, (block), (reg))
 #define WREG32_AUDIO_ENDPT(block, reg, v) adev->audio_endpt_wreg(adev, (block), (reg), (v))
 #define WREG32_P(reg, val, mask)				\
@@ -2153,6 +2169,13 @@ static inline struct amdgpu_fence *to_amdgpu_fence(struct fence *f)
 		tmp_ &= (mask);					\
 		tmp_ |= ((val) & ~(mask));			\
 		WREG32(reg, tmp_);				\
+	} while (0)
+#define WREG32_SMC_P(reg, val, mask)				\
+	do {							\
+		uint32_t tmp_ = RREG32_SMC(reg);			\
+		tmp_ &= (mask);					\
+		tmp_ |= ((val) & ~(mask));			\
+		WREG32_SMC(reg, tmp_);				\
 	} while (0)
 #define WREG32_AND(reg, and) WREG32_P(reg, 0, and)
 #define WREG32_OR(reg, or) WREG32_P(reg, or, ~(or))

@@ -13,18 +13,6 @@
 #define BIF_FB_EN__FB_WRITE_EN__SHIFT                                         1
 #define BIF_FB_EN__FB_READ_EN_MASK                                            0x00000001
 #define BIF_FB_EN__FB_READ_EN__SHIFT                                          0
-#define INT_MASK__VBLANK_INT_MASK                                             (1 << 0)
-#define INT_MASK__VBLANK_INT__SHIFT                                           0
-#define INT_MASK__VLINE_INT_MASK                                              (1 << 4)
-#define INT_MASK__VLINE_INT__SHIFT                                            4
-#define GRPH_INT_STATUS__GRPH_PFLIP_INT_OCCURRED_MASK                         0x00000001
-#define GRPH_INT_STATUS__GRPH_PFLIP_INT_OCCURRED__SHIFT                       0
-#define GRPH_INT_STATUS__GRPH_PFLIP_INT_CLEAR_MASK                            0x00000100
-#define GRPH_INT_STATUS__GRPH_PFLIP_INT_CLEAR__SHIFT                          8
-#define GRPH_INT_CONTROL__GRPH_PFLIP_INT_TYPE_MASK                            0x00000100
-#define GRPH_INT_CONTROL__GRPH_PFLIP_INT_TYPE__SHIFT                          8
-#define GRPH_INT_CONTROL__GRPH_PFLIP_INT_MASK                                 (1 << 0)
-#define GRPH_INT_CONTROL__GRPH_PFLIP_INT__SHIFT                               0
 #define PB0_PIF_CNTL__LS2_EXIT_TIME_MASK                                      (0x7 << 17)
 #define PB0_PIF_CNTL__LS2_EXIT_TIME__SHIFT                                    17
 #define PB0_PIF_PAIRING__MULTI_PIF_MASK                                       0x02000000

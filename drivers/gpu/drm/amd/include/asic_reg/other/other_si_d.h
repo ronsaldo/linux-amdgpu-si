@@ -1,14 +1,8 @@
 #ifndef __OTHER_SI_D_H__
 #define __OTHER_SI_D_H__
 
-#define mmPIPE0_DMIF_BUFFER_CONTROL                                             0x328
 #define mmMCLK_PWRMGT_CNTL                                                      0xae8
 #define mmDLL_CNTL                                                              0xae9
-#define mmPRIORITY_A_CNT                                                        0x1ac6
-#define mmPRIORITY_B_CNT                                                        0x1ac7
-#define mmDPG_PIPE_ARBITRATION_CONTROL3                                         0x1b32
-#define mmDPG_PIPE_LATENCY_CONTROL                                              0x1b33
-#define mmDAC_AUTODETECT_INT_CONTROL                                            0x19f2
 #define mmSCRATCH_REG0                                                          0x2140
 #define mmSCRATCH_REG1                                                          0x2141
 #define mmSCRATCH_REG2                                                          0x2142

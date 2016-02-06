@@ -22,9 +22,9 @@
 #include "smu/smu_6_0_enum.h"
 #include "smu/smu_6_0_sh_mask.h"
 
-#include "dce/dce_7_0_d.h"
-#include "dce/dce_7_0_enum.h"
-#include "dce/dce_7_0_sh_mask.h"
+#include "dce/dce_6_0_d.h"
+#include "dce/dce_6_0_enum.h"
+#include "dce/dce_6_0_sh_mask.h"
 
 #include "gmc/gmc_6_0_d.h"
 #include "gmc/gmc_6_0_enum.h"
@@ -38,8 +38,10 @@
 #include "oss/oss_1_0_enum.h"
 #include "oss/oss_1_0_sh_mask.h"
 
+#include "si_ih.h"
 #include "gmc_v6_0.h"
 #include "gfx_v6_0.h"
+#include "dce_v6_0.h"
 
 #include "amdgpu_amdkfd.h"
 #include "amdgpu_powerplay.h"
@@ -47,7 +49,7 @@
 /*
  * Indirect registers accessor
  */
-u32 si_cg_rreg(struct amdgpu_device *adev, u32 reg)
+static u32 si_cg_rreg(struct amdgpu_device *adev, u32 reg)
 {
 	unsigned long flags;
 	u32 r;
@@ -59,7 +61,7 @@ u32 si_cg_rreg(struct amdgpu_device *adev, u32 reg)
 	return r;
 }
 
-void si_cg_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
+static void si_cg_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
@@ -69,7 +71,7 @@ void si_cg_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	spin_unlock_irqrestore(&adev->cg_idx_lock, flags);
 }
 
-u32 si_pif_phy0_rreg(struct amdgpu_device *adev, u32 reg)
+static u32 si_pif_phy0_rreg(struct amdgpu_device *adev, u32 reg)
 {
 	unsigned long flags;
 	u32 r;
@@ -81,7 +83,7 @@ u32 si_pif_phy0_rreg(struct amdgpu_device *adev, u32 reg)
 	return r;
 }
 
-void si_pif_phy0_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
+static void si_pif_phy0_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
@@ -91,7 +93,7 @@ void si_pif_phy0_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	spin_unlock_irqrestore(&adev->pif_idx_lock, flags);
 }
 
-u32 si_pif_phy1_rreg(struct amdgpu_device *adev, u32 reg)
+static u32 si_pif_phy1_rreg(struct amdgpu_device *adev, u32 reg)
 {
 	unsigned long flags;
 	u32 r;
@@ -103,7 +105,7 @@ u32 si_pif_phy1_rreg(struct amdgpu_device *adev, u32 reg)
 	return r;
 }
 
-void si_pif_phy1_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
+static void si_pif_phy1_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
@@ -113,7 +115,7 @@ void si_pif_phy1_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	spin_unlock_irqrestore(&adev->pif_idx_lock, flags);
 }
 
-u32 si_pcie_rreg(struct amdgpu_device *adev, u32 reg)
+static u32 si_pcie_rreg(struct amdgpu_device *adev, u32 reg)
 {
 	unsigned long flags;
 	u32 r;
@@ -126,7 +128,7 @@ u32 si_pcie_rreg(struct amdgpu_device *adev, u32 reg)
 	return r;
 }
 
-void si_pcie_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
+static void si_pcie_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
@@ -162,7 +164,7 @@ static void si_smc_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	spin_unlock_irqrestore(&adev->smc_idx_lock, flags);
 }
 
-u32 si_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
+static u32 si_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
 {
 	unsigned long flags;
 	u32 r;
@@ -174,7 +176,7 @@ u32 si_uvd_ctx_rreg(struct amdgpu_device *adev, u32 reg)
 	return r;
 }
 
-void si_uvd_ctx_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
+static void si_uvd_ctx_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 {
 	unsigned long flags;
 
@@ -2581,25 +2583,6 @@ static void si_program_aspm(struct amdgpu_device *adev)
 	}
 }
 
-static const struct amdgpu_ip_block_version kaveri_ip_blocks[] =
-{
-	/* ORDER MATTERS! */
-	{
-		.type = AMD_IP_BLOCK_TYPE_COMMON,
-		.major = 1,
-		.minor = 0,
-		.rev = 0,
-		.funcs = &si_common_ip_funcs,
-	},
-	{
-		.type = AMD_IP_BLOCK_TYPE_GMC,
-		.major = 7,
-		.minor = 0,
-		.rev = 0,
-		.funcs = &gmc_v6_0_ip_funcs,
-	},
-};
-
 static const struct amdgpu_ip_block_version verde_ip_blocks[] =
 {
 	/* ORDER MATTERS! */
@@ -2612,10 +2595,24 @@ static const struct amdgpu_ip_block_version verde_ip_blocks[] =
 	},
 	{
 		.type = AMD_IP_BLOCK_TYPE_GMC,
-		.major = 7,
+		.major = 6,
 		.minor = 0,
 		.rev = 0,
 		.funcs = &gmc_v6_0_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_IH,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_ih_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_DCE,
+		.major = 6,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &dce_v6_0_ip_funcs,
 	},
 };
 
@@ -2631,10 +2628,24 @@ static const struct amdgpu_ip_block_version pitcairn_ip_blocks[] =
 	},
 	{
 		.type = AMD_IP_BLOCK_TYPE_GMC,
-		.major = 7,
+		.major = 6,
 		.minor = 0,
 		.rev = 0,
 		.funcs = &gmc_v6_0_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_IH,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_ih_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_DCE,
+		.major = 6,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &dce_v6_0_ip_funcs,
 	},
 };
 
@@ -2650,10 +2661,24 @@ static const struct amdgpu_ip_block_version tahiti_ip_blocks[] =
 	},
 	{
 		.type = AMD_IP_BLOCK_TYPE_GMC,
-		.major = 7,
+		.major = 6,
 		.minor = 0,
 		.rev = 0,
 		.funcs = &gmc_v6_0_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_IH,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_ih_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_DCE,
+		.major = 6,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &dce_v6_0_ip_funcs,
 	},
 };
 
@@ -2669,10 +2694,24 @@ static const struct amdgpu_ip_block_version oland_ip_blocks[] =
 	},
 	{
 		.type = AMD_IP_BLOCK_TYPE_GMC,
-		.major = 7,
+		.major = 6,
 		.minor = 0,
 		.rev = 0,
 		.funcs = &gmc_v6_0_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_IH,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_ih_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_DCE,
+		.major = 6,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &dce_v6_0_ip_funcs,
 	},
 };
 
@@ -2692,6 +2731,20 @@ static const struct amdgpu_ip_block_version hainan_ip_blocks[] =
 		.minor = 0,
 		.rev = 0,
 		.funcs = &gmc_v6_0_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_IH,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_ih_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_DCE,
+		.major = 6,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &dce_v6_0_ip_funcs,
 	},
 };
 
@@ -2757,6 +2810,12 @@ static int si_common_early_init(void *handle)
 	adev->pcie_wreg = &si_pcie_wreg;
 	adev->uvd_ctx_rreg = &si_uvd_ctx_rreg;
 	adev->uvd_ctx_wreg = &si_uvd_ctx_wreg;
+	adev->pif_phy0_rreg = &si_pif_phy0_rreg;
+	adev->pif_phy0_wreg = &si_pif_phy0_wreg;
+	adev->pif_phy1_rreg = &si_pif_phy1_rreg;
+	adev->pif_phy1_wreg = &si_pif_phy1_wreg;
+	adev->cg_rreg = &si_cg_rreg;
+	adev->cg_wreg = &si_cg_wreg;
 
 	adev->asic_funcs = &si_asic_funcs;
 

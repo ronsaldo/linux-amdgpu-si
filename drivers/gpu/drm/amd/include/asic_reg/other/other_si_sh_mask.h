@@ -1,8 +1,6 @@
 #ifndef __OTHER_SI_SH_MASK_H__
 #define __OTHER_SI_SH_MASK_H__
 
-#define PIPE0_DMIF_BUFFER_CONTROL__DMIF_BUFFERS_ALLOCATED_COMPLETED_MASK      0x00000010
-#define PIPE0_DMIF_BUFFER_CONTROL__DMIF_BUFFERS_ALLOCATED_COMPLETED__SHIFT    4
 #define MCLK_PWRMGT_CNTL__MRDCK0_PDNB_MASK                                    0x00000100
 #define MCLK_PWRMGT_CNTL__MRDCK0_PDNB__SHIFT                                  8
 #define MCLK_PWRMGT_CNTL__MRDCK0_RESET_MASK                                   0x00010000
@@ -21,12 +19,6 @@
 #define DLL_CNTL__MRDCK0_BYPASS__SHIFT                                        24
 #define DLL_CNTL__MRDCK1_BYPASS_MASK                                          0x02000000
 #define DLL_CNTL__MRDCK1_BYPASS__SHIFT                                        25
-#define PRIORITY_A_CNT__PRIORITY_OFF_MASK                                     0x00010000
-#define PRIORITY_A_CNT__PRIORITY_OFF__SHIFT                                   16
-#define PRIORITY_A_CNT__PRIORITY_MARK_MASK                                    0x7fff
-#define PRIORITY_A_CNT__PRIORITY_MARK__SHIFT                                  0
-#define PRIORITY_A_CNT__PRIORITY_ALWAYS_ON_MASK                               0x00100000
-#define PRIORITY_A_CNT__PRIORITY_ALWAYS_ON__SHIFT                             20
 #define SPI_CONFIG_CNTL_1__INTERP_ONE_PRIM_PER_ROW_MASK                       0x00000010
 #define SPI_CONFIG_CNTL_1__INTERP_ONE_PRIM_PER_ROW__SHIFT                     4
 #define CGTS_USER_TCC_DISABLE__TCC_DISABLE_MASK                               0xFFFF0000

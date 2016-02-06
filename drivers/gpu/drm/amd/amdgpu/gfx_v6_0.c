@@ -25,8 +25,8 @@
 #include "amdgpu.h"
 #include "amdgpu_ih.h"
 #include "amdgpu_gfx.h"
-#include "cikd.h"
-#include "cik.h"
+#include "sid.h"
+#include "si_reg.h"
 #include "atom.h"
 #include "amdgpu_ucode.h"
 #include "clearstate_ci.h"
@@ -39,9 +39,9 @@
 #include "smu/smu_6_0_enum.h"
 #include "smu/smu_6_0_sh_mask.h"
 
-#include "dce/dce_7_0_d.h"
-#include "dce/dce_7_0_enum.h"
-#include "dce/dce_7_0_sh_mask.h"
+#include "dce/dce_6_0_d.h"
+#include "dce/dce_6_0_enum.h"
+#include "dce/dce_6_0_sh_mask.h"
 
 #include "gmc/gmc_6_0_d.h"
 #include "gmc/gmc_6_0_enum.h"
@@ -70,7 +70,7 @@ void gfx_v6_0_rlc_stop(struct amdgpu_device *adev)
  * registers are instanced per SE or SH.  0xffffffff means
  * broadcast to all SEs or SHs (SI).
  */
-void gmc_v6_0_select_se_sh(struct amdgpu_device *adev, u32 se_num, u32 sh_num)
+void gfx_v6_0_select_se_sh(struct amdgpu_device *adev, u32 se_num, u32 sh_num)
 {
 	u32 data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK;
 

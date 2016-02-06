@@ -1,5 +1,5 @@
-#ifndef __UVD_4_0_D_H__
-#define __UVD_4_0_D_H__
+#ifndef __UVD_3_2_D_H__
+#define __UVD_3_2_D_H__
 
 #define mmUVD_UDEC_ADDR_CONFIG                                                  0x3bd3
 #define mmUVD_UDEC_DB_ADDR_CONFIG                                               0x3bd4
@@ -10,4 +10,4 @@
 #define mmUVD_CGC_CTRL                                                          0x3d2c
 #define mmUVD_CGC_MEM_CTRL                                                      0x30
 
-#endif /*__UVD_4_0_D_H__*/
+#endif /*__UVD_3_2_D_H__*/

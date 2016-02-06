@@ -1,5 +1,5 @@
-#ifndef __UVD_4_0_SH_MASK_H__
-#define __UVD_4_0_SH_MASK_H__
+#ifndef __UVD_3_2_SH_MASK_H__
+#define __UVD_3_2_SH_MASK_H__
 
 #define UVD_CGC_CTRL__CG_DT_MASK                                              (0xf << 2)
 #define UVD_CGC_CTRL__CG_DT__SHIFT                                            2
@@ -14,4 +14,4 @@
 #define UVD_CGC_MEM_CTRL__DYN_RR_EN_MASK                                      0x00000002
 #define UVD_CGC_MEM_CTRL__DYN_RR_EN__SHIFT                                    1
 
-#endif /*__UVD_4_0_SH_MASK_H__*/
+#endif /*__UVD_3_2_SH_MASK_H__*/

@@ -39,10 +39,11 @@
  * Supported ASIC types
  */
 enum amd_asic_type {
-    CHIP_OLAND,
-    CHIP_VERDE,
-    CHIP_PITCAIRN,
+    CHIP_ARUBA,
     CHIP_TAHITI,
+    CHIP_PITCAIRN,
+    CHIP_VERDE,
+    CHIP_OLAND,
     CHIP_HAINAN,
 	CHIP_BONAIRE,
 	CHIP_KAVERI,

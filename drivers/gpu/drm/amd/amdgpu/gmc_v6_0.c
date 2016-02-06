@@ -25,6 +25,7 @@
 #include "amdgpu.h"
 #include "sid.h"
 #include "si.h"
+#include "si_reg.h"
 #include "gmc_v6_0.h"
 #include "amdgpu_ucode.h"
 

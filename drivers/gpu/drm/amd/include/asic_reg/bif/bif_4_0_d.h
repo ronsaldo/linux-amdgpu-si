@@ -5,9 +5,6 @@
 #define mmINTERRUPT_CNTL                                                        0x151a
 #define mmINTERRUPT_CNTL2                                                       0x151b
 #define mmBIF_FB_EN                                                             0x1524
-#define mmINT_MASK                                                              0x1ad0
-#define mmGRPH_INT_STATUS                                                       0x1a16
-#define mmGRPH_INT_CONTROL                                                      0x1a17
 #define ixPB0_PIF_CNTL                                                          0x10
 #define ixPB0_PIF_PAIRING                                                       0x11
 #define ixPB0_PIF_PWRDOWN_0                                                     0x12

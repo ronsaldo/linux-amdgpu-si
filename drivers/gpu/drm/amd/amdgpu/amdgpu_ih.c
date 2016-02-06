@@ -191,10 +191,12 @@ restart_ih:
 	DRM_DEBUG("%s: rptr %d, wptr %d\n", __func__, adev->irq.ih.rptr, wptr);
 
 	/* Order reading of wptr vs. reading of IH ring data */
+	/* DEBUG */ printk(KERN_ALERT "amdgpu_ih_process enter\n");
 	rmb();
 
 	while (adev->irq.ih.rptr != wptr) {
 		u32 ring_index = adev->irq.ih.rptr >> 2;
+		/* DEBUG */ printk(KERN_ALERT "amdgpu_ih_process do\n");
 
 		/* Before dispatching irq to IP blocks, send it to amdkfd */
 		amdgpu_amdkfd_interrupt(adev,

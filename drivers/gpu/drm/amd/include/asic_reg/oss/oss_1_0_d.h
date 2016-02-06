@@ -40,5 +40,7 @@
 #define mmDMA_PGFSM_CONFIG                                                      0x3436
 #define mmDMA_PGFSM_WRITE                                                       0x3437
 #define mmDMA_PACKET_INDIRECT_BUFFER                                            0x1
+#define mmDMA_SEM_INCOMPLETE_TIMER_CNTL                                         0x3411
+#define mmDMA_SEM_WAIT_FAIL_TIMER_CNTL                                          0x3412
 
 #endif /*__OSS_1_0_D_H__*/

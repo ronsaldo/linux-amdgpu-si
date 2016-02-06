@@ -68,6 +68,7 @@ static void si_ih_set_interrupt_funcs(struct amdgpu_device *adev);
  */
 static void si_ih_enable_interrupts(struct amdgpu_device *adev)
 {
+	/* DEBUG */ printk(KERN_ALERT "si_ih_enable_interrupts called\n");
 	u32 ih_cntl = RREG32(mmIH_CNTL);
 	u32 ih_rb_cntl = RREG32(mmIH_RB_CNTL);
 
@@ -90,6 +91,8 @@ static void si_ih_disable_interrupts(struct amdgpu_device *adev)
 	u32 ih_rb_cntl = RREG32(mmIH_RB_CNTL);
 	u32 ih_cntl = RREG32(mmIH_CNTL);
 
+	/* DEBUG */ printk(KERN_ALERT "si_ih_disable_interrupts called\n");
+
 	ih_rb_cntl &= ~IH_RB_CNTL__IH_RB_ENABLE_MASK;
 	ih_cntl &= ~IH_CNTL__ENABLE_INTR_MASK;
 	WREG32(mmIH_RB_CNTL, ih_rb_cntl);
@@ -104,6 +107,8 @@ static void si_ih_disable_interrupts(struct amdgpu_device *adev)
 static void si_disable_interrupt_state(struct amdgpu_device *adev)
 {
 	u32 tmp;
+
+	/* DEBUG */ printk("si_disable_interrupt_state called\n");
 
 	tmp = RREG32(mmCP_INT_CNTL_RING0) &
 		(CP_INT_CNTL_RING2__CNTX_BUSY_INT_ENABLE_MASK | CP_INT_CNTL_RING2__CNTX_EMPTY_INT_ENABLE_MASK);
@@ -203,7 +208,7 @@ static int si_ih_irq_init(struct amdgpu_device *adev)
 
 	/* set the writeback address whether it's enabled or not */
 	wptr_off = adev->wb.gpu_addr + (adev->irq.ih.wptr_offs * 4);
-	WREG32(mmIH_RB_WPTR_ADDR_LO, lower_32_bits(wptr_off));
+	WREG32(mmIH_RB_WPTR_ADDR_LO, lower_32_bits(wptr_off) & 0xFFFFFFFC);
 	WREG32(mmIH_RB_WPTR_ADDR_HI, upper_32_bits(wptr_off) & 0xFF);
 
 	WREG32(mmIH_RB_CNTL, ih_rb_cntl);
@@ -220,7 +225,7 @@ static int si_ih_irq_init(struct amdgpu_device *adev)
 	WREG32(mmIH_CNTL, ih_cntl);
 
     /* force the active interrupt state to all disabled */
-	si_disable_interrupt_state(adev);
+	/* si_disable_interrupt_state(adev); */
 
 	pci_set_master(adev->pdev);
 
@@ -305,6 +310,8 @@ static void si_ih_decode_iv(struct amdgpu_device *adev,
 
    /* wptr/rptr are in bytes! */
    adev->irq.ih.rptr += 16;
+
+   /* DEBUG */ printk(KERN_ALERT "Received IV: 0x%08X 0x%08X 0x%08X 0x%08X", dw[0], dw[1], dw[2], dw[3]);
 }
 
 /**

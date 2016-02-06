@@ -85,6 +85,8 @@
 #define DMA_IB_CNTL__DMA_IB_SWAP_ENABLE__SHIFT                                4
 #define DMA_IB_CNTL__DMA_IB_ENABLE_MASK                                       0x00000001
 #define DMA_IB_CNTL__DMA_IB_ENABLE__SHIFT                                     0
+#define DMA_IB_CNTL__CMD_VMID_FORCE_MASK                                      0x80000000
+#define DMA_IB_CNTL__CMD_VMID_FORCE__SHIFT                                    31
 #define DMA_CNTL__DATA_SWAP_ENABLE_MASK                                       0x00000008
 #define DMA_CNTL__DATA_SWAP_ENABLE__SHIFT                                     3
 #define DMA_CNTL__SEM_WAIT_INT_ENABLE_MASK                                    0x00000004

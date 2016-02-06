@@ -42,6 +42,7 @@
 #include "gmc_v6_0.h"
 #include "gfx_v6_0.h"
 #include "dce_v6_0.h"
+#include "si_sdma.h"
 
 #include "amdgpu_amdkfd.h"
 #include "amdgpu_powerplay.h"
@@ -2614,6 +2615,13 @@ static const struct amdgpu_ip_block_version verde_ip_blocks[] =
 		.rev = 0,
 		.funcs = &dce_v6_0_ip_funcs,
 	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_SDMA,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_dma_ip_funcs,
+	},
 };
 
 static const struct amdgpu_ip_block_version pitcairn_ip_blocks[] =
@@ -2646,6 +2654,13 @@ static const struct amdgpu_ip_block_version pitcairn_ip_blocks[] =
 		.minor = 0,
 		.rev = 0,
 		.funcs = &dce_v6_0_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_SDMA,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_dma_ip_funcs,
 	},
 };
 
@@ -2680,6 +2695,13 @@ static const struct amdgpu_ip_block_version tahiti_ip_blocks[] =
 		.rev = 0,
 		.funcs = &dce_v6_0_ip_funcs,
 	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_SDMA,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_dma_ip_funcs,
+	},
 };
 
 static const struct amdgpu_ip_block_version oland_ip_blocks[] =
@@ -2713,6 +2735,13 @@ static const struct amdgpu_ip_block_version oland_ip_blocks[] =
 		.rev = 0,
 		.funcs = &dce_v6_0_ip_funcs,
 	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_SDMA,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_dma_ip_funcs,
+	},
 };
 
 static const struct amdgpu_ip_block_version hainan_ip_blocks[] =
@@ -2745,6 +2774,13 @@ static const struct amdgpu_ip_block_version hainan_ip_blocks[] =
 		.minor = 0,
 		.rev = 0,
 		.funcs = &dce_v6_0_ip_funcs,
+	},
+	{
+		.type = AMD_IP_BLOCK_TYPE_SDMA,
+		.major = 1,
+		.minor = 0,
+		.rev = 0,
+		.funcs = &si_dma_ip_funcs,
 	},
 };
 

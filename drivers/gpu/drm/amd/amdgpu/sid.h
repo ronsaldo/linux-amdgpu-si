@@ -292,12 +292,6 @@
 #define DMA1_REGISTER_OFFSET                              0x200 /* not a register */
 #define DMA_MAX_INSTANCE 2
 
-#define DMA_PACKET(cmd, b, t, s, n)	((((cmd) & 0xF) << 28) |	\
-					 (((b) & 0x1) << 26) |		\
-					 (((t) & 0x1) << 23) |		\
-					 (((s) & 0x1) << 22) |		\
-					 (((n) & 0xFFFFF) << 0))
-
 #define DMA_IB_PACKET(cmd, vmid, n)	((((cmd) & 0xF) << 28) |	\
 					 (((vmid) & 0xF) << 20) |	\
 					 (((n) & 0xFFFFF) << 0))

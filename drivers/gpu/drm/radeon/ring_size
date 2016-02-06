@@ -1,0 +1,416 @@
+r100.c:1062:		rptr = le32_to_cpu(rdev->wb.wb[ring->rptr_offs/4]);
+r100.c:1082:	WREG32(RADEON_CP_RB_WPTR, ring->wptr);
+r100.c:1147:	ring->align_mask = 16 - 1;
+r100.c:1177:	DRM_INFO("radeon: ring at 0x%016lX\n", (unsigned long)ring->gpu_addr);
+r100.c:1178:	WREG32(RADEON_CP_RB_BASE, ring->gpu_addr);
+r100.c:1182:	ring->wptr = 0;
+r100.c:1183:	WREG32(RADEON_CP_RB_WPTR, ring->wptr);
+r100.c:1216:	ring->ready = true;
+r100.c:1219:	if (!ring->rptr_save_reg /* not resuming from suspend */
+r100.c:1221:		r = radeon_scratch_get(rdev, &ring->rptr_save_reg);
+r100.c:1224:			ring->rptr_save_reg = 0;
+r100.c:2958:	count = (rdp + ring->ring_size - wdp) & ring->ptr_mask;
+r100.c:2962:	seq_printf(m, "%u free dwords in ring\n", ring->ring_free_dw);
+r100.c:2964:	if (ring->ready) {
+r100.c:2966:			i = (rdp + j) & ring->ptr_mask;
+r100.c:2967:			seq_printf(m, "r[%04d]=0x%08x\n", i, ring->ring[i]);
+r100.c:3691:	if (ring->rptr_save_reg) {
+r100.c:3692:		u32 next_rptr = ring->wptr + 2 + 3;
+r100.c:3693:		radeon_ring_write(ring, PACKET0(ring->rptr_save_reg, 0));
+cik.c:3882:		DRM_ERROR("radeon: cp failed to lock ring %d (%d).\n", ring->idx, r);
+cik.c:3898:		DRM_INFO("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+cik.c:3901:			  ring->idx, scratch, tmp);
+cik.c:3922:	switch (ring->idx) {
+cik.c:3926:		switch (ring->me) {
+cik.c:3928:			ref_and_mask = CP2 << ring->pipe;
+cik.c:3931:			ref_and_mask = CP6 << ring->pipe;
+cik.c:4045:	if (emit_wait && ring->idx == RADEON_RING_TYPE_GFX_INDEX) {
+cik.c:4092:	radeon_sync_rings(rdev, &sync, ring->idx);
+cik.c:4113:	r = radeon_fence_emit(rdev, &fence, ring->idx);
+cik.c:4155:		if (ring->rptr_save_reg) {
+cik.c:4156:			next_rptr = ring->wptr + 3 + 4;
+cik.c:4158:			radeon_ring_write(ring, ((ring->rptr_save_reg -
+cik.c:4162:			next_rptr = ring->wptr + 5 + 4;
+cik.c:4165:			radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+cik.c:4166:			radeon_ring_write(ring, upper_32_bits(ring->next_rptr_gpu_addr));
+cik.c:4205:	r = radeon_ib_get(rdev, ring->idx, &ib, NULL, 256);
+cik.c:4484:	rb_bufsz = order_base_2(ring->ring_size / 8);
+cik.c:4493:	ring->wptr = 0;
+cik.c:4494:	WREG32(CP_RB0_WPTR, ring->wptr);
+cik.c:4509:	rb_addr = ring->gpu_addr >> 8;
+cik.c:4534:		rptr = rdev->wb.wb[ring->rptr_offs/4];
+cik.c:4554:	WREG32(CP_RB0_WPTR, ring->wptr);
+cik.c:4564:		rptr = rdev->wb.wb[ring->rptr_offs/4];
+cik.c:4567:		cik_srbm_select(rdev, ring->me, ring->pipe, ring->queue, 0);
+cik.c:4583:		wptr = rdev->wb.wb[ring->wptr_offs/4];
+cik.c:4586:		cik_srbm_select(rdev, ring->me, ring->pipe, ring->queue, 0);
+cik.c:4599:	rdev->wb.wb[ring->wptr_offs/4] = ring->wptr;
+cik.c:4600:	WDOORBELL32(ring->doorbell_index, ring->wptr);
+cik.c:4608:	cik_srbm_select(rdev, ring->me, ring->pipe, ring->queue, 0);
+cik.c:6113:	int usepfp = (ring->idx == RADEON_RING_TYPE_GFX_INDEX);
+cik.c:6155:	cik_hdp_flush_cp_ring_emit(rdev, ring->idx);
+cik.c:7505:		if (ring->me == 1) {
+cik.c:7506:			switch (ring->pipe) {
+cik.c:7511:				DRM_DEBUG("si_irq_set: sw int cp1 invalid pipe %d\n", ring->pipe);
+cik.c:7515:			DRM_DEBUG("si_irq_set: sw int cp1 invalid me %d\n", ring->me);
+cik.c:7521:		if (ring->me == 1) {
+cik.c:7522:			switch (ring->pipe) {
+cik.c:7527:				DRM_DEBUG("si_irq_set: sw int cp2 invalid pipe %d\n", ring->pipe);
+cik.c:7531:			DRM_DEBUG("si_irq_set: sw int cp2 invalid me %d\n", ring->me);
+cik.c:8319:				if ((cp1_ring->me == me_id) & (cp1_ring->pipe == pipe_id))
+cik.c:8321:				if ((cp2_ring->me == me_id) & (cp2_ring->pipe == pipe_id))
+cik.c:8648:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP_RPTR_OFFSET,
+cik.c:8656:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP1_RPTR_OFFSET,
+cik.c:8660:	ring->me = 1; /* first MEC */
+cik.c:8661:	ring->pipe = 0; /* first pipe */
+cik.c:8662:	ring->queue = 0; /* first queue */
+cik.c:8663:	ring->wptr_offs = CIK_WB_CP1_WPTR_OFFSET;
+cik.c:8667:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP2_RPTR_OFFSET,
+cik.c:8672:	ring->me = 1; /* first MEC */
+cik.c:8673:	ring->pipe = 0; /* first pipe */
+cik.c:8674:	ring->queue = 1; /* second queue */
+cik.c:8675:	ring->wptr_offs = CIK_WB_CP2_WPTR_OFFSET;
+cik.c:8678:	r = radeon_ring_init(rdev, ring, ring->ring_size, R600_WB_DMA_RPTR_OFFSET,
+cik.c:8684:	r = radeon_ring_init(rdev, ring, ring->ring_size, CAYMAN_WB_DMA1_RPTR_OFFSET,
+cik.c:8698:	if (ring->ring_size) {
+cik.c:8699:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+cik.c:8710:	if (ring->ring_size)
+cik.c:8711:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+cik.c:8715:	if (ring->ring_size)
+cik.c:8716:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+cik.c:8901:	ring->ring_obj = NULL;
+cik.c:8905:	ring->ring_obj = NULL;
+cik.c:8907:	r = radeon_doorbell_get(rdev, &ring->doorbell_index);
+cik.c:8912:	ring->ring_obj = NULL;
+cik.c:8914:	r = radeon_doorbell_get(rdev, &ring->doorbell_index);
+cik.c:8919:	ring->ring_obj = NULL;
+cik.c:8923:	ring->ring_obj = NULL;
+cik.c:8929:		ring->ring_obj = NULL;
+cik.c:8936:		ring->ring_obj = NULL;
+cik.c:8940:		ring->ring_obj = NULL;
+radeon_test.c:265:	uint32_t handle = ring->idx ^ 0xdeafbeef;
+radeon_test.c:268:	if (ring->idx == R600_RING_TYPE_UVD_INDEX) {
+radeon_test.c:269:		r = radeon_uvd_get_create_msg(rdev, ring->idx, handle, NULL);
+radeon_test.c:275:		r = radeon_uvd_get_destroy_msg(rdev, ring->idx, handle, fence);
+radeon_test.c:281:	} else if (ring->idx == TN_RING_TYPE_VCE1_INDEX ||
+radeon_test.c:282:		   ring->idx == TN_RING_TYPE_VCE2_INDEX) {
+radeon_test.c:283:		r = radeon_vce_get_create_msg(rdev, ring->idx, handle, NULL);
+radeon_test.c:289:		r = radeon_vce_get_destroy_msg(rdev, ring->idx, handle, fence);
+radeon_test.c:298:			DRM_ERROR("Failed to lock ring A %d\n", ring->idx);
+radeon_test.c:301:		radeon_fence_emit(rdev, fence, ring->idx);
+radeon_ib.c:128:	if (!ib->length_dw || !ring->ready) {
+radeon_ib.c:265:		if (!ring->ready)
+radeon_ib.c:271:			ring->ready = false;
+r600_dma.c:57:		rptr = rdev->wb.wb[ring->rptr_offs/4];
+r600_dma.c:89:	WREG32(DMA_RB_WPTR, (ring->wptr << 2) & 0x3fffc);
+r600_dma.c:131:	rb_bufsz = order_base_2(ring->ring_size / 4);
+r600_dma.c:151:	WREG32(DMA_RB_BASE, ring->gpu_addr >> 8);
+r600_dma.c:167:	ring->wptr = 0;
+r600_dma.c:168:	WREG32(DMA_RB_WPTR, ring->wptr << 2);
+r600_dma.c:172:	ring->ready = true;
+r600_dma.c:176:		ring->ready = false;
+r600_dma.c:239:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+r600_dma.c:251:		DRM_ERROR("radeon: dma failed to lock ring %d (%d).\n", ring->idx, r);
+r600_dma.c:268:		DRM_INFO("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+r600_dma.c:271:			  ring->idx, tmp);
+r600_dma.c:346:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+r600_dma.c:353:	r = radeon_ib_get(rdev, ring->idx, &ib, NULL, 256);
+r600_dma.c:405:		u32 next_rptr = ring->wptr + 4;
+r600_dma.c:410:		radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+r600_dma.c:411:		radeon_ring_write(ring, upper_32_bits(ring->next_rptr_gpu_addr) & 0xff);
+r600_dma.c:418:	while ((ring->wptr & 7) != 5)
+r600_dma.c:464:	radeon_sync_rings(rdev, &sync, ring->idx);
+r600_dma.c:480:	r = radeon_fence_emit(rdev, &fence, ring->idx);
+radeon_semaphore.c:69:		ring->last_semaphore_signal_addr = semaphore->gpu_addr;
+radeon_semaphore.c:86:		ring->last_semaphore_wait_addr = semaphore->gpu_addr;
+radeon_vce.c:765:			  ring->idx, r);
+radeon_vce.c:779:	                 ring->idx, i);
+radeon_vce.c:782:	                  ring->idx);
+radeon_vce.c:801:	r = radeon_vce_get_create_msg(rdev, ring->idx, 1, NULL);
+radeon_vce.c:807:	r = radeon_vce_get_destroy_msg(rdev, ring->idx, 1, &fence);
+radeon_vce.c:817:	        DRM_INFO("ib test on ring %d succeeded\n", ring->idx);
+evergreen_dma.c:73:		u32 next_rptr = ring->wptr + 4;
+evergreen_dma.c:78:		radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+evergreen_dma.c:79:		radeon_ring_write(ring, upper_32_bits(ring->next_rptr_gpu_addr) & 0xff);
+evergreen_dma.c:86:	while ((ring->wptr & 7) != 5)
+evergreen_dma.c:133:	radeon_sync_rings(rdev, &sync, ring->idx);
+evergreen_dma.c:149:	r = radeon_fence_emit(rdev, &fence, ring->idx);
+vce_v1_0.c:62:	if (ring->idx == TN_RING_TYPE_VCE1_INDEX)
+vce_v1_0.c:79:	if (ring->idx == TN_RING_TYPE_VCE1_INDEX)
+vce_v1_0.c:96:	if (ring->idx == TN_RING_TYPE_VCE1_INDEX)
+vce_v1_0.c:97:		WREG32(VCE_RB_WPTR, ring->wptr);
+vce_v1_0.c:99:		WREG32(VCE_RB_WPTR2, ring->wptr);
+vce_v1_0.c:298:	WREG32(VCE_RB_RPTR, ring->wptr);
+vce_v1_0.c:299:	WREG32(VCE_RB_WPTR, ring->wptr);
+vce_v1_0.c:300:	WREG32(VCE_RB_BASE_LO, ring->gpu_addr);
+vce_v1_0.c:301:	WREG32(VCE_RB_BASE_HI, upper_32_bits(ring->gpu_addr));
+vce_v1_0.c:302:	WREG32(VCE_RB_SIZE, ring->ring_size / 4);
+vce_v1_0.c:305:	WREG32(VCE_RB_RPTR2, ring->wptr);
+vce_v1_0.c:306:	WREG32(VCE_RB_WPTR2, ring->wptr);
+vce_v1_0.c:307:	WREG32(VCE_RB_BASE_LO2, ring->gpu_addr);
+vce_v1_0.c:308:	WREG32(VCE_RB_BASE_HI2, upper_32_bits(ring->gpu_addr));
+vce_v1_0.c:309:	WREG32(VCE_RB_SIZE2, ring->ring_size / 4);
+vce_v1_0.c:366:	ring->ready = true;
+vce_v1_0.c:369:		ring->ready = false;
+vce_v1_0.c:374:	ring->ready = true;
+vce_v1_0.c:377:		ring->ready = false;
+evergreen.c:2876:	if (ring->rptr_save_reg) {
+evergreen.c:2877:		next_rptr = ring->wptr + 3 + 4;
+evergreen.c:2879:		radeon_ring_write(ring, ((ring->rptr_save_reg - 
+evergreen.c:2883:		next_rptr = ring->wptr + 5 + 4;
+evergreen.c:2885:		radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+evergreen.c:2886:		radeon_ring_write(ring, (upper_32_bits(ring->next_rptr_gpu_addr) & 0xff) | (1 << 18));
+evergreen.c:3020:	rb_bufsz = order_base_2(ring->ring_size / 8);
+evergreen.c:3035:	ring->wptr = 0;
+evergreen.c:3036:	WREG32(CP_RB_WPTR, ring->wptr);
+evergreen.c:3054:	WREG32(CP_RB_BASE, ring->gpu_addr >> 8);
+evergreen.c:3058:	ring->ready = true;
+evergreen.c:3061:		ring->ready = false;
+evergreen.c:5457:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP_RPTR_OFFSET,
+evergreen.c:5463:	r = radeon_ring_init(rdev, ring, ring->ring_size, R600_WB_DMA_RPTR_OFFSET,
+evergreen.c:5479:	if (ring->ring_size) {
+evergreen.c:5480:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+si_dma.c:46:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+si_dma.c:256:	radeon_sync_rings(rdev, &sync, ring->idx);
+si_dma.c:272:	r = radeon_fence_emit(rdev, &fence, ring->idx);
+radeon_pm.c:262:		if (!ring->ready) {
+radeon_pm.c:1088:		if (ring->ready)
+radeon_pm.c:1800:			if (ring->ready) {
+radeon.h:2700:	if (ring->count_dw <= 0)
+radeon.h:2703:	ring->ring[ring->wptr++] = v;
+radeon.h:2704:	ring->wptr &= ring->ptr_mask;
+radeon.h:2705:	ring->count_dw--;
+radeon.h:2706:	ring->ring_free_dw--;
+rv770.c:1129:	radeon_scratch_free(rdev, ring->rptr_save_reg);
+rv770.c:1753:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP_RPTR_OFFSET,
+rv770.c:1759:	r = radeon_ring_init(rdev, ring, ring->ring_size, R600_WB_DMA_RPTR_OFFSET,
+rv770.c:1776:	if (ring->ring_size) {
+rv770.c:1777:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+si.c:3415:		if (ring->rptr_save_reg) {
+si.c:3416:			next_rptr = ring->wptr + 3 + 4 + 8;
+si.c:3418:			radeon_ring_write(ring, ((ring->rptr_save_reg -
+si.c:3422:			next_rptr = ring->wptr + 5 + 4 + 8;
+si.c:3425:			radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+si.c:3426:			radeon_ring_write(ring, upper_32_bits(ring->next_rptr_gpu_addr));
+si.c:3634:	radeon_scratch_free(rdev, ring->rptr_save_reg);
+si.c:3638:	radeon_scratch_free(rdev, ring->rptr_save_reg);
+si.c:3642:	radeon_scratch_free(rdev, ring->rptr_save_reg);
+si.c:3666:	rb_bufsz = order_base_2(ring->ring_size / 8);
+si.c:3675:	ring->wptr = 0;
+si.c:3676:	WREG32(CP_RB0_WPTR, ring->wptr);
+si.c:3692:	WREG32(CP_RB0_BASE, ring->gpu_addr >> 8);
+si.c:3697:	rb_bufsz = order_base_2(ring->ring_size / 8);
+si.c:3706:	ring->wptr = 0;
+si.c:3707:	WREG32(CP_RB1_WPTR, ring->wptr);
+si.c:3716:	WREG32(CP_RB1_BASE, ring->gpu_addr >> 8);
+si.c:3721:	rb_bufsz = order_base_2(ring->ring_size / 8);
+si.c:3730:	ring->wptr = 0;
+si.c:3731:	WREG32(CP_RB2_WPTR, ring->wptr);
+si.c:3740:	WREG32(CP_RB2_BASE, ring->gpu_addr >> 8);
+si.c:6993:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP_RPTR_OFFSET,
+si.c:6999:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP1_RPTR_OFFSET,
+si.c:7005:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP2_RPTR_OFFSET,
+si.c:7011:	r = radeon_ring_init(rdev, ring, ring->ring_size, R600_WB_DMA_RPTR_OFFSET,
+si.c:7017:	r = radeon_ring_init(rdev, ring, ring->ring_size, CAYMAN_WB_DMA1_RPTR_OFFSET,
+si.c:7035:		if (ring->ring_size) {
+si.c:7036:			r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+si.c:7048:	if (ring->ring_size)
+si.c:7049:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+si.c:7053:	if (ring->ring_size)
+si.c:7054:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+si.c:7200:	ring->ring_obj = NULL;
+si.c:7204:	ring->ring_obj = NULL;
+si.c:7208:	ring->ring_obj = NULL;
+si.c:7212:	ring->ring_obj = NULL;
+si.c:7216:	ring->ring_obj = NULL;
+si.c:7223:			ring->ring_obj = NULL;
+si.c:7231:		ring->ring_obj = NULL;
+si.c:7235:		ring->ring_obj = NULL;
+uvd_v1_0.c:70:	WREG32(UVD_RBC_RB_WPTR, ring->wptr);
+uvd_v1_0.c:172:	ring->ready = true;
+uvd_v1_0.c:175:		ring->ready = false;
+uvd_v1_0.c:252:	ring->ready = false;
+uvd_v1_0.c:363:	WREG32(UVD_LMI_EXT40_ADDR, upper_32_bits(ring->gpu_addr) |
+uvd_v1_0.c:369:	ring->wptr = RREG32(UVD_RBC_RB_RPTR);
+uvd_v1_0.c:370:	WREG32(UVD_RBC_RB_WPTR, ring->wptr);
+uvd_v1_0.c:373:	WREG32(UVD_RBC_RB_BASE, ring->gpu_addr);
+uvd_v1_0.c:376:	rb_bufsz = order_base_2(ring->ring_size);
+uvd_v1_0.c:430:			  ring->idx, r);
+uvd_v1_0.c:445:			 ring->idx, i);
+uvd_v1_0.c:448:			  ring->idx, tmp);
+uvd_v1_0.c:513:	r = radeon_uvd_get_create_msg(rdev, ring->idx, 1, NULL);
+uvd_v1_0.c:519:	r = radeon_uvd_get_destroy_msg(rdev, ring->idx, 1, &fence);
+uvd_v1_0.c:530:	DRM_INFO("ib test on ring %d succeeded\n",  ring->idx);
+ni.c:1442:	if (ring->rptr_save_reg) {
+ni.c:1443:		uint32_t next_rptr = ring->wptr + 3 + 4 + 8;
+ni.c:1445:		radeon_ring_write(ring, ((ring->rptr_save_reg - 
+ni.c:1486:		rptr = rdev->wb.wb[ring->rptr_offs/4];
+ni.c:1488:		if (ring->idx == RADEON_RING_TYPE_GFX_INDEX)
+ni.c:1490:		else if (ring->idx == CAYMAN_RING_TYPE_CP1_INDEX)
+ni.c:1504:	if (ring->idx == RADEON_RING_TYPE_GFX_INDEX)
+ni.c:1506:	else if (ring->idx == CAYMAN_RING_TYPE_CP1_INDEX)
+ni.c:1517:	if (ring->idx == RADEON_RING_TYPE_GFX_INDEX) {
+ni.c:1518:		WREG32(CP_RB0_WPTR, ring->wptr);
+ni.c:1520:	} else if (ring->idx == CAYMAN_RING_TYPE_CP1_INDEX) {
+ni.c:1521:		WREG32(CP_RB1_WPTR, ring->wptr);
+ni.c:1524:		WREG32(CP_RB2_WPTR, ring->wptr);
+ni.c:1627:	radeon_scratch_free(rdev, ring->rptr_save_reg);
+ni.c:1700:		rb_cntl = order_base_2(ring->ring_size / 8);
+ni.c:1716:		WREG32(cp_rb_base[i], ring->gpu_addr >> 8);
+ni.c:1724:		ring->wptr = 0;
+ni.c:1726:		WREG32(cp_rb_wptr[i], ring->wptr);
+ni.c:2127:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP_RPTR_OFFSET,
+ni.c:2133:	r = radeon_ring_init(rdev, ring, ring->ring_size, R600_WB_DMA_RPTR_OFFSET,
+ni.c:2139:	r = radeon_ring_init(rdev, ring, ring->ring_size, CAYMAN_WB_DMA1_RPTR_OFFSET,
+ni.c:2156:	if (ring->ring_size) {
+ni.c:2157:		r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+ni.c:2167:		if (ring->ring_size)
+ni.c:2168:			r = radeon_ring_init(rdev, ring, ring->ring_size, 0, 0x0);
+ni.c:2171:		if (ring->ring_size)
+ni.c:2172:			r = radeon_ring_init(rdev, ring, ring->ring_size, 0, 0x0);
+ni.c:2317:	ring->ring_obj = NULL;
+ni.c:2321:	ring->ring_obj = NULL;
+ni.c:2325:	ring->ring_obj = NULL;
+ni.c:2331:		ring->ring_obj = NULL;
+ni.c:2339:			ring->ring_obj = NULL;
+ni.c:2343:			ring->ring_obj = NULL;
+radeon_ring.c:60:	switch (ring->idx) {
+radeon_ring.c:83:	ring->ring_free_dw = rptr + (ring->ring_size / 4);
+radeon_ring.c:84:	ring->ring_free_dw -= ring->wptr;
+radeon_ring.c:85:	ring->ring_free_dw &= ring->ptr_mask;
+radeon_ring.c:86:	if (!ring->ring_free_dw) {
+radeon_ring.c:88:		ring->ring_free_dw = ring->ring_size / 4;
+radeon_ring.c:109:	if (ndw > (ring->ring_size / 4))
+radeon_ring.c:114:	ndw = (ndw + ring->align_mask) & ~ring->align_mask;
+radeon_ring.c:115:	while (ndw > (ring->ring_free_dw - 1)) {
+radeon_ring.c:117:		if (ndw < ring->ring_free_dw) {
+radeon_ring.c:120:		r = radeon_fence_wait_next(rdev, ring->idx);
+radeon_ring.c:124:	ring->count_dw = ndw;
+radeon_ring.c:125:	ring->wptr_old = ring->wptr;
+radeon_ring.c:170:	if (hdp_flush && rdev->asic->ring[ring->idx]->hdp_flush)
+radeon_ring.c:171:		rdev->asic->ring[ring->idx]->hdp_flush(rdev, ring);
+radeon_ring.c:173:	while (ring->wptr & ring->align_mask) {
+radeon_ring.c:174:		radeon_ring_write(ring, ring->nop);
+radeon_ring.c:211:	ring->wptr = ring->wptr_old;
+radeon_ring.c:237:	atomic_set(&ring->last_rptr, radeon_ring_get_rptr(rdev, ring));
+radeon_ring.c:238:	atomic64_set(&ring->last_activity, jiffies_64);
+radeon_ring.c:250:	uint64_t last = atomic64_read(&ring->last_activity);
+radeon_ring.c:253:	if (rptr != atomic_read(&ring->last_rptr)) {
+radeon_ring.c:262:			ring->idx, elapsed);
+radeon_ring.c:286:	if (ring->ring_obj == NULL) {
+radeon_ring.c:292:	if (!radeon_fence_count_emitted(rdev, ring->idx)) {
+radeon_ring.c:298:	if (ring->rptr_save_reg)
+radeon_ring.c:299:		ptr = RREG32(ring->rptr_save_reg);
+radeon_ring.c:301:		ptr = le32_to_cpu(*ring->next_rptr_cpu_addr);
+radeon_ring.c:308:	size = ring->wptr + (ring->ring_size / 4);
+radeon_ring.c:310:	size &= ring->ptr_mask;
+radeon_ring.c:323:		(*data)[i] = ring->ring[ptr++];
+radeon_ring.c:324:		ptr &= ring->ptr_mask;
+radeon_ring.c:380:	ring->ring_size = ring_size;
+radeon_ring.c:381:	ring->rptr_offs = rptr_offs;
+radeon_ring.c:382:	ring->nop = nop;
+radeon_ring.c:384:	if (ring->ring_obj == NULL) {
+radeon_ring.c:385:		r = radeon_bo_create(rdev, ring->ring_size, PAGE_SIZE, true,
+radeon_ring.c:387:				     NULL, &ring->ring_obj);
+radeon_ring.c:392:		r = radeon_bo_reserve(ring->ring_obj, false);
+radeon_ring.c:395:		r = radeon_bo_pin(ring->ring_obj, RADEON_GEM_DOMAIN_GTT,
+radeon_ring.c:396:					&ring->gpu_addr);
+radeon_ring.c:398:			radeon_bo_unreserve(ring->ring_obj);
+radeon_ring.c:402:		r = radeon_bo_kmap(ring->ring_obj,
+radeon_ring.c:403:				       (void **)&ring->ring);
+radeon_ring.c:404:		radeon_bo_unreserve(ring->ring_obj);
+radeon_ring.c:410:	ring->ptr_mask = (ring->ring_size / 4) - 1;
+radeon_ring.c:411:	ring->ring_free_dw = ring->ring_size / 4;
+radeon_ring.c:413:		u32 index = RADEON_WB_RING0_NEXT_RPTR + (ring->idx * 4);
+radeon_ring.c:414:		ring->next_rptr_gpu_addr = rdev->wb.gpu_addr + index;
+radeon_ring.c:415:		ring->next_rptr_cpu_addr = &rdev->wb.wb[index/4];
+radeon_ring.c:438:	ring_obj = ring->ring_obj;
+radeon_ring.c:439:	ring->ready = false;
+radeon_ring.c:440:	ring->ring = NULL;
+radeon_ring.c:441:	ring->ring_obj = NULL;
+radeon_ring.c:472:	count = (ring->ring_size / 4) - ring->ring_free_dw;
+radeon_ring.c:482:	if (ring->rptr_save_reg) {
+radeon_ring.c:483:		rptr_next = RREG32(ring->rptr_save_reg);
+radeon_ring.c:485:			   ring->rptr_save_reg, rptr_next, rptr_next);
+radeon_ring.c:490:		   ring->wptr, ring->wptr);
+radeon_ring.c:492:		   ring->last_semaphore_signal_addr);
+radeon_ring.c:494:		   ring->last_semaphore_wait_addr);
+radeon_ring.c:495:	seq_printf(m, "%u free dwords in ring\n", ring->ring_free_dw);
+radeon_ring.c:498:	if (!ring->ring)
+radeon_ring.c:504:	i = (rptr + ring->ptr_mask + 1 - 32) & ring->ptr_mask;
+radeon_ring.c:506:		seq_printf(m, "r[%5d]=0x%08x", i, ring->ring[i]);
+radeon_ring.c:512:		i = (i + 1) & ring->ptr_mask;
+rv770_dma.c:67:	radeon_sync_rings(rdev, &sync, ring->idx);
+rv770_dma.c:83:	r = radeon_fence_emit(rdev, &fence, ring->idx);
+ni_dma.c:59:		rptr = rdev->wb.wb[ring->rptr_offs/4];
+ni_dma.c:61:		if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+ni_dma.c:85:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+ni_dma.c:106:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+ni_dma.c:111:	WREG32(reg, (ring->wptr << 2) & 0x3fffc);
+ni_dma.c:129:		u32 next_rptr = ring->wptr + 4;
+ni_dma.c:134:		radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+ni_dma.c:135:		radeon_ring_write(ring, upper_32_bits(ring->next_rptr_gpu_addr) & 0xff);
+ni_dma.c:142:	while ((ring->wptr & 7) != 5)
+ni_dma.c:210:		rb_bufsz = order_base_2(ring->ring_size / 4);
+ni_dma.c:230:		WREG32(DMA_RB_BASE + reg_offset, ring->gpu_addr >> 8);
+ni_dma.c:243:		ring->wptr = 0;
+ni_dma.c:244:		WREG32(DMA_RB_WPTR + reg_offset, ring->wptr << 2);
+ni_dma.c:248:		ring->ready = true;
+ni_dma.c:250:		r = radeon_ring_test(rdev, ring->idx, ring);
+ni_dma.c:252:			ring->ready = false;
+ni_dma.c:292:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+cik_sdma.c:69:		rptr = rdev->wb.wb[ring->rptr_offs/4];
+cik_sdma.c:71:		if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+cik_sdma.c:95:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+cik_sdma.c:116:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+cik_sdma.c:121:	WREG32(reg, (ring->wptr << 2) & 0x3fffc);
+cik_sdma.c:140:		u32 next_rptr = ring->wptr + 5;
+cik_sdma.c:145:		radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+cik_sdma.c:146:		radeon_ring_write(ring, upper_32_bits(ring->next_rptr_gpu_addr));
+cik_sdma.c:152:	while ((ring->wptr & 7) != 4)
+cik_sdma.c:388:		rb_bufsz = order_base_2(ring->ring_size / 4);
+cik_sdma.c:408:		WREG32(SDMA0_GFX_RB_BASE + reg_offset, ring->gpu_addr >> 8);
+cik_sdma.c:409:		WREG32(SDMA0_GFX_RB_BASE_HI + reg_offset, ring->gpu_addr >> 40);
+cik_sdma.c:411:		ring->wptr = 0;
+cik_sdma.c:412:		WREG32(SDMA0_GFX_RB_WPTR + reg_offset, ring->wptr << 2);
+cik_sdma.c:424:		ring->ready = true;
+cik_sdma.c:426:		r = radeon_ring_test(rdev, ring->idx, ring);
+cik_sdma.c:428:			ring->ready = false;
+cik_sdma.c:604:	radeon_sync_rings(rdev, &sync, ring->idx);
+cik_sdma.c:622:	r = radeon_fence_emit(rdev, &fence, ring->idx);
+cik_sdma.c:654:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+cik_sdma.c:666:		DRM_ERROR("radeon: dma failed to lock ring %d (%d).\n", ring->idx, r);
+cik_sdma.c:684:		DRM_INFO("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+cik_sdma.c:687:			  ring->idx, tmp);
+cik_sdma.c:711:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+cik_sdma.c:721:	r = radeon_ib_get(rdev, ring->idx, &ib, NULL, 256);
+cik_sdma.c:775:	if (ring->idx == R600_RING_TYPE_DMA_INDEX)
+cik_sdma.c:982:	cik_sdma_hdp_flush_ring_emit(rdev, ring->idx);
+r600.c:2617:		rptr = rdev->wb.wb[ring->rptr_offs/4];
+r600.c:2637:	WREG32(R600_CP_RB_WPTR, ring->wptr);
+r600.c:2727:	rb_bufsz = order_base_2(ring->ring_size / 8);
+r600.c:2741:	ring->wptr = 0;
+r600.c:2742:	WREG32(CP_RB_WPTR, ring->wptr);
+r600.c:2760:	WREG32(CP_RB_BASE, ring->gpu_addr >> 8);
+r600.c:2764:	ring->ready = true;
+r600.c:2767:		ring->ready = false;
+r600.c:2785:	ring->ring_size = ring_size;
+r600.c:2786:	ring->align_mask = 16 - 1;
+r600.c:2789:		r = radeon_scratch_get(rdev, &ring->rptr_save_reg);
+r600.c:2792:			ring->rptr_save_reg = 0;
+r600.c:2802:	radeon_scratch_free(rdev, ring->rptr_save_reg);
+r600.c:2835:		DRM_ERROR("radeon: cp failed to lock ring %d (%d).\n", ring->idx, r);
+r600.c:2850:		DRM_INFO("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+r600.c:2853:			  ring->idx, scratch, tmp);
+r600.c:2986:	radeon_sync_rings(rdev, &sync, ring->idx);
+r600.c:3012:	r = radeon_fence_emit(rdev, &fence, ring->idx);
+r600.c:3101:	r = radeon_ring_init(rdev, ring, ring->ring_size, RADEON_WB_CP_RPTR_OFFSET,
+r600.c:3115:		if (ring->ring_size) {
+r600.c:3116:			r = radeon_ring_init(rdev, ring, ring->ring_size, 0,
+r600.c:3331:	if (ring->rptr_save_reg) {
+r600.c:3332:		next_rptr = ring->wptr + 3 + 4;
+r600.c:3334:		radeon_ring_write(ring, ((ring->rptr_save_reg -
+r600.c:3338:		next_rptr = ring->wptr + 5 + 4;
+r600.c:3340:		radeon_ring_write(ring, ring->next_rptr_gpu_addr & 0xfffffffc);
+r600.c:3341:		radeon_ring_write(ring, (upper_32_bits(ring->next_rptr_gpu_addr) & 0xff) | (1 << 18));
+r600.c:3370:	r = radeon_ib_get(rdev, ring->idx, &ib, NULL, 256);

@@ -48,6 +48,7 @@
 
 #define DMA0_REGISTER_OFFSET                              0x0 /* not a register */
 #define DMA1_REGISTER_OFFSET                              0x200 /* not a register */
+#define DMA_MAX_INSTANCE                                  2
 
 /* interruption */
 #       define IH_MC_SWAP(x)                              ((x) << 1)
@@ -243,5 +244,37 @@
 #       define NI_DIG_DUAL_LINK_ENABLE(x)              (((x) & 0x1) << 16)
 #       define NI_DIG_SWAP(x)                          (((x) & 0x1) << 18)
 #       define NI_DIG_SYMCLK_FE_ON                     (0x1 << 24)
+
+#define DMA_PACKET(cmd, t, s, n)	((((cmd) & 0xF) << 28) |	\
+					 (((t) & 0x1) << 23) |		\
+					 (((s) & 0x1) << 22) |		\
+					 (((n) & 0xFFFFF) << 0))
+
+#define SI_DMA_PACKET(cmd, b, t, s, n)	((((cmd) & 0xF) << 28) |	\
+					 (((b) & 0x1) << 26) |		\
+					 (((t) & 0x1) << 23) |		\
+					 (((s) & 0x1) << 22) |		\
+					 (((n) & 0xFFFFF) << 0))
+
+#define DMA_IB_PACKET(cmd, vmid, n)	((((cmd) & 0xF) << 28) |	\
+					 (((vmid) & 0xF) << 20) |	\
+					 (((n) & 0xFFFFF) << 0))
+
+#define DMA_PTE_PDE_PACKET(n)		((2 << 28) |			\
+					 (1 << 26) |			\
+					 (1 << 21) |			\
+					 (((n) & 0xFFFFF) << 0))
+
+/* async DMA Packet types */
+#define	DMA_PACKET_WRITE				  0x2
+#define	DMA_PACKET_COPY					  0x3
+#define	DMA_PACKET_INDIRECT_BUFFER			  0x4
+#define	DMA_PACKET_SEMAPHORE				  0x5
+#define	DMA_PACKET_FENCE				  0x6
+#define	DMA_PACKET_TRAP					  0x7
+#define	DMA_PACKET_SRBM_WRITE				  0x9
+#define	DMA_PACKET_CONSTANT_FILL			  0xd
+#define	DMA_PACKET_POLL_REG_MEM				  0xe
+#define	DMA_PACKET_NOP					  0xf
 
 #endif

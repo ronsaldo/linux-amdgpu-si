@@ -2849,10 +2849,10 @@ static const struct amdgpu_asic_funcs si_asic_funcs =
 	.get_xclk = &si_get_xclk,
 	.set_uvd_clocks = &si_set_uvd_clocks,
 	.set_vce_clocks = &si_set_vce_clocks,
-	/*.get_cu_info = &gfx_v7_0_get_cu_info,*/
+	.get_cu_info = &gfx_v6_0_get_cu_info,
 
 	/* these should be moved to their own ip modules */
-	/*.get_gpu_clock_counter = &gfx_v7_0_get_gpu_clock_counter,*/
+	.get_gpu_clock_counter = &gfx_v6_0_get_gpu_clock_counter,
 	.wait_for_mc_idle = &gmc_v6_0_mc_wait_for_idle,
 };
 

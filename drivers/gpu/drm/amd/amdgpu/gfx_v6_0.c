@@ -57,6 +57,7 @@
 
 void gfx_v6_0_rlc_stop(struct amdgpu_device *adev)
 {
+	/* TODO: Implement me */
 }
 
 /**
@@ -87,4 +88,16 @@ void gfx_v6_0_select_se_sh(struct amdgpu_device *adev, u32 se_num, u32 sh_num)
 		data |= (sh_num << GRBM_GFX_INDEX__SH_INDEX__SHIFT) |
 			(se_num << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
 	WREG32(mmGRBM_GFX_INDEX, data);
+}
+
+uint64_t gfx_v6_0_get_gpu_clock_counter(struct amdgpu_device *adev)
+{
+	/* TODO: Implement me*/
+	return 0;
+}
+
+int gfx_v6_0_get_cu_info(struct amdgpu_device *adev, struct amdgpu_cu_info *cu_info)
+{
+	/* TODO: Implement me*/
+	return 0;
 }

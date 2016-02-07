@@ -1093,7 +1093,7 @@ static void si_dma_emit_fill_buffer(struct amdgpu_ib *ib,
     ib->ptr[ib->length_dw++] = SI_DMA_PACKET(DMA_PACKET_CONSTANT_FILL, 0, 0, 0, (byte_count >> 2));
     ib->ptr[ib->length_dw++] = lower_32_bits(dst_offset);
     ib->ptr[ib->length_dw++] = src_data;
-    ib->ptr[ib->length_dw++] = upper_32_bits(dst_offset);
+    ib->ptr[ib->length_dw++] = (upper_32_bits(dst_offset) & 0xff) << 16;
 }
 
 static const struct amdgpu_buffer_funcs si_dma_buffer_funcs = {

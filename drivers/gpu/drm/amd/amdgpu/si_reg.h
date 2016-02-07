@@ -21,14 +21,13 @@
  *
  * Authors: Alex Deucher
  */
+/* Driver code adapted from radeon kernel module by Ronie Salgado */
 
 #ifndef __SI_REG_H__
 
 /* max cursor sizes (in pixels) */
 #define CURSOR_WIDTH 64
 #define CURSOR_HEIGHT 64
-
-#define SI_WB_IH_WPTR_OFFSET   2048
 
 /* Registers taken from r600d.h and r600_reg.h */
 #define	mmSI_PORT_INDEX					(0x0038/4)

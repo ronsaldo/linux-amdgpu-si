@@ -20,6 +20,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+ /* Driver code adapted from radeon kernel module by Ronie Salgado */
+ 
 #include "drmP.h"
 #include "amdgpu.h"
 #include "amdgpu_ih.h"
@@ -68,7 +70,6 @@ static void si_ih_set_interrupt_funcs(struct amdgpu_device *adev);
  */
 static void si_ih_enable_interrupts(struct amdgpu_device *adev)
 {
-	/* DEBUG */ printk(KERN_ALERT "si_ih_enable_interrupts called\n");
 	u32 ih_cntl = RREG32(mmIH_CNTL);
 	u32 ih_rb_cntl = RREG32(mmIH_RB_CNTL);
 
@@ -91,8 +92,6 @@ static void si_ih_disable_interrupts(struct amdgpu_device *adev)
 	u32 ih_rb_cntl = RREG32(mmIH_RB_CNTL);
 	u32 ih_cntl = RREG32(mmIH_CNTL);
 
-	/* DEBUG */ printk(KERN_ALERT "si_ih_disable_interrupts called\n");
-
 	ih_rb_cntl &= ~IH_RB_CNTL__IH_RB_ENABLE_MASK;
 	ih_cntl &= ~IH_CNTL__ENABLE_INTR_MASK;
 	WREG32(mmIH_RB_CNTL, ih_rb_cntl);
@@ -107,8 +106,6 @@ static void si_ih_disable_interrupts(struct amdgpu_device *adev)
 static void si_disable_interrupt_state(struct amdgpu_device *adev)
 {
 	u32 tmp;
-
-	/* DEBUG */ printk("si_disable_interrupt_state called\n");
 
 	tmp = RREG32(mmCP_INT_CNTL_RING0) &
 		(CP_INT_CNTL_RING2__CNTX_BUSY_INT_ENABLE_MASK | CP_INT_CNTL_RING2__CNTX_EMPTY_INT_ENABLE_MASK);
@@ -253,7 +250,7 @@ static inline u32 si_ih_get_wptr(struct amdgpu_device *adev)
 {
 	u32 wptr, tmp;
 
-	wptr = le32_to_cpu(adev->wb.wb[SI_WB_IH_WPTR_OFFSET/4]);
+	wptr = le32_to_cpu(adev->wb.wb[adev->irq.ih.wptr_offs]);
 
 	if (wptr & IH_RB_WPTR__RB_OVERFLOW_MASK) {
 		wptr &= ~IH_RB_WPTR__RB_OVERFLOW_MASK;
@@ -311,7 +308,6 @@ static void si_ih_decode_iv(struct amdgpu_device *adev,
    /* wptr/rptr are in bytes! */
    adev->irq.ih.rptr += 16;
 
-   /* DEBUG */ printk(KERN_ALERT "Received IV: 0x%08X 0x%08X 0x%08X 0x%08X", dw[0], dw[1], dw[2], dw[3]);
 }
 
 /**

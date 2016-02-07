@@ -20,6 +20,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+ /* Driver code adapted from radeon kernel module by Ronie Salgado */
 
 #ifndef __SI_SDMA_H__
 #define __SI_SDMA_H__

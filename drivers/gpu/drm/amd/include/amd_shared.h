@@ -39,7 +39,6 @@
  * Supported ASIC types
  */
 enum amd_asic_type {
-    CHIP_ARUBA,
     CHIP_TAHITI,
     CHIP_PITCAIRN,
     CHIP_VERDE,

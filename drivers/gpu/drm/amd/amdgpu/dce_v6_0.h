@@ -20,7 +20,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-
+/* Driver code adapted from radeon kernel module by Ronie Salgado */
 #ifndef __DCE_V6_0_H__
 #define __DCE_V6_0_H__
 

@@ -20,6 +20,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+ /* Driver code adapted from radeon kernel module by Ronie Salgado */
 #include "drmP.h"
 #include "amdgpu.h"
 #include "amdgpu_pm.h"
@@ -804,23 +805,6 @@ static u32 dce_v6_0_line_buffer_adjust(struct amdgpu_device *adev,
 	return 0;
 }
 
-static u32 evergreen_get_number_of_dram_channels(struct amdgpu_device *adev)
-{
-	u32 tmp = RREG32(mmMC_SHARED_CHMAP);
-
-	switch (REG_GET_FIELD(tmp, MC_SHARED_CHMAP, NOOFCHAN)) {
-	case 0:
-	default:
-		return 1;
-	case 1:
-		return 2;
-	case 2:
-		return 4;
-	case 3:
-		return 8;
-	}
-}
-
 static u32 si_get_number_of_dram_channels(struct amdgpu_device *adev)
 {
 	u32 tmp = RREG32(mmMC_SHARED_CHMAP);
@@ -1124,10 +1108,7 @@ static void dce_v6_0_program_watermarks(struct amdgpu_device *adev,
 		priority_a_cnt = 0;
 		priority_b_cnt = 0;
 
-		if (adev->family == CHIP_ARUBA)
-			dram_channels = evergreen_get_number_of_dram_channels(adev);
-		else
-			dram_channels = si_get_number_of_dram_channels(adev);
+		dram_channels = si_get_number_of_dram_channels(adev);
 
 		/* watermark for high clocks */
 		if (adev->pm.dpm_enabled) {

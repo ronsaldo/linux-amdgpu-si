@@ -20,6 +20,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+ /* Driver code adapted from radeon kernel module by Ronie Salgado */
 #include <linux/firmware.h>
 #include "drmP.h"
 #include "amdgpu.h"

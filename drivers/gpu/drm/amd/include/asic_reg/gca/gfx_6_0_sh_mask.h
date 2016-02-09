@@ -129,10 +129,36 @@
 #define CP_ME_CNTL__CP_ME_HALT__SHIFT                                         28
 #define CP_ME_CNTL__CP_PFP_HALT_MASK                                          0x04000000
 #define CP_ME_CNTL__CP_PFP_HALT__SHIFT                                        26
+#define CP_QUEUE_THRESHOLDS__ROQ_IB1_START_MASK                               (0x3f << 0)
+#define CP_QUEUE_THRESHOLDS__ROQ_IB1_START__SHIFT                             0
+#define CP_QUEUE_THRESHOLDS__ROQ_IB2_START_MASK                               (0x3f << 8)
+#define CP_QUEUE_THRESHOLDS__ROQ_IB2_START__SHIFT                             8
+#define CP_MEQ_THRESHOLDS__MEQ2_START_MASK                                    (0xff << 8)
+#define CP_MEQ_THRESHOLDS__MEQ2_START__SHIFT                                  8
+#define CP_MEQ_THRESHOLDS__MEQ1_START_MASK                                    (0xff << 0)
+#define CP_MEQ_THRESHOLDS__MEQ1_START__SHIFT                                  0
+#define VGT_CACHE_INVALIDATION__AUTO_INVLD_EN_MASK                            0xc0
+#define VGT_CACHE_INVALIDATION__AUTO_INVLD_EN__SHIFT                          6
+#define VGT_CACHE_INVALIDATION__CACHE_INVALIDATION_MASK                       3
+#define VGT_CACHE_INVALIDATION__CACHE_INVALIDATION__SHIFT                     0
 #define CC_GC_SHADER_ARRAY_CONFIG__INACTIVE_CUS_MASK                          0xFFFF0000
 #define CC_GC_SHADER_ARRAY_CONFIG__INACTIVE_CUS__SHIFT                        16
+#define PA_CL_ENHANCE__NUM_CLIP_SEQ_MASK                                      0x6
+#define PA_CL_ENHANCE__NUM_CLIP_SEQ__SHIFT                                    1
 #define PA_CL_ENHANCE__CLIP_VTX_REORDER_ENA_MASK                              0x00000001
 #define PA_CL_ENHANCE__CLIP_VTX_REORDER_ENA__SHIFT                            0
+#define PA_SC_FORCE_EOV_MAX_CNTS__FORCE_EOV_MAX_REZ_CNT_MASK                  (0xffff << 16)
+#define PA_SC_FORCE_EOV_MAX_CNTS__FORCE_EOV_MAX_REZ_CNT__SHIFT                16
+#define PA_SC_FORCE_EOV_MAX_CNTS__FORCE_EOV_MAX_CLK_CNT_MASK                  0xffff
+#define PA_SC_FORCE_EOV_MAX_CNTS__FORCE_EOV_MAX_CLK_CNT__SHIFT                0
+#define PA_SC_FIFO_SIZE__SC_BACKEND_PRIM_FIFO_SIZE_MASK                       0x7fc0
+#define PA_SC_FIFO_SIZE__SC_BACKEND_PRIM_FIFO_SIZE__SHIFT                     6
+#define PA_SC_FIFO_SIZE__SC_FRONTEND_PRIM_FIFO_SIZE_MASK                      (0x3f << 0)
+#define PA_SC_FIFO_SIZE__SC_FRONTEND_PRIM_FIFO_SIZE__SHIFT                    0
+#define PA_SC_FIFO_SIZE__SC_EARLYZ_TILE_FIFO_SIZE_MASK                        0xff800000
+#define PA_SC_FIFO_SIZE__SC_EARLYZ_TILE_FIFO_SIZE__SHIFT                      23
+#define PA_SC_FIFO_SIZE__SC_HIZ_TILE_FIFO_SIZE_MASK                           0x1f8000
+#define PA_SC_FIFO_SIZE__SC_HIZ_TILE_FIFO_SIZE__SHIFT                         15
 #define SQ_POWER_THROTTLE__MAX_POWER_MASK                                     (0x3fff << 16)
 #define SQ_POWER_THROTTLE__MAX_POWER__SHIFT                                   0
 #define SQ_POWER_THROTTLE__MIN_POWER_MASK                                     (0x3fff << 0)
@@ -143,6 +169,16 @@
 #define SQ_POWER_THROTTLE2__STI_SIZE__SHIFT                                   16
 #define SQ_POWER_THROTTLE2__LTI_RATIO_MASK                                    (0xf << 27)
 #define SQ_POWER_THROTTLE2__LTI_RATIO__SHIFT                                  27
+#define SPI_CONFIG_CNTL_1__INTERP_ONE_PRIM_PER_ROW_MASK                       0x00000010
+#define SPI_CONFIG_CNTL_1__INTERP_ONE_PRIM_PER_ROW__SHIFT                     4
+#define SPI_CONFIG_CNTL_1__VTX_DONE_DELAY_MASK                                (0xf << 0)
+#define SPI_CONFIG_CNTL_1__VTX_DONE_DELAY__SHIFT                              0
+#define CGTS_USER_TCC_DISABLE__TCC_DISABLE_MASK                               0xFFFF0000
+#define CGTS_USER_TCC_DISABLE__TCC_DISABLE__SHIFT                             16
+#define CGTS_SM_CTRL_REG__OVERRIDE_MASK                                       0x00200000
+#define CGTS_SM_CTRL_REG__OVERRIDE__SHIFT                                     21
+#define CGTS_SM_CTRL_REG__LS_OVERRIDE_MASK                                    0x00400000
+#define CGTS_SM_CTRL_REG__LS_OVERRIDE__SHIFT                                  22
 #define GB_ADDR_CONFIG__NUM_SHADER_ENGINES_MASK                               0x00003000
 #define GB_ADDR_CONFIG__NUM_SHADER_ENGINES__SHIFT                             12
 #define GB_ADDR_CONFIG__SHADER_ENGINE_TILE_SIZE_MASK                          0x00070000

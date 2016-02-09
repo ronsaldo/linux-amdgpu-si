@@ -19,14 +19,6 @@
 #define DLL_CNTL__MRDCK0_BYPASS__SHIFT                                        24
 #define DLL_CNTL__MRDCK1_BYPASS_MASK                                          0x02000000
 #define DLL_CNTL__MRDCK1_BYPASS__SHIFT                                        25
-#define SPI_CONFIG_CNTL_1__INTERP_ONE_PRIM_PER_ROW_MASK                       0x00000010
-#define SPI_CONFIG_CNTL_1__INTERP_ONE_PRIM_PER_ROW__SHIFT                     4
-#define CGTS_USER_TCC_DISABLE__TCC_DISABLE_MASK                               0xFFFF0000
-#define CGTS_USER_TCC_DISABLE__TCC_DISABLE__SHIFT                             16
-#define CGTS_SM_CTRL_REG__OVERRIDE_MASK                                       0x00200000
-#define CGTS_SM_CTRL_REG__OVERRIDE__SHIFT                                     21
-#define CGTS_SM_CTRL_REG__LS_OVERRIDE_MASK                                    0x00400000
-#define CGTS_SM_CTRL_REG__LS_OVERRIDE__SHIFT                                  22
 #define PACKET3_STRMOUT_BUFFER_UPDATE__WR_CONFIRM_MASK                        0x00100000
 #define PACKET3_STRMOUT_BUFFER_UPDATE__WR_CONFIRM__SHIFT                      20
 #define PACKET3_STRMOUT_BUFFER_UPDATE__WR_ONE_ADDR_MASK                       0x00010000

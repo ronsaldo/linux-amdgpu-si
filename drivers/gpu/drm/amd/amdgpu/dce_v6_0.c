@@ -2208,9 +2208,6 @@ static int dce_v6_0_early_init(void *handle)
 	adev->audio_endpt_rreg = &dce_v6_0_audio_endpt_rreg;
 	adev->audio_endpt_wreg = &dce_v6_0_audio_endpt_wreg;
 
-	dce_v6_0_set_display_funcs(adev);
-	dce_v6_0_set_irq_funcs(adev);
-
 	switch (adev->asic_type) {
 	case CHIP_TAHITI:
 	case CHIP_PITCAIRN:
@@ -2233,6 +2230,9 @@ static int dce_v6_0_early_init(void *handle)
 		/* FIXME: not supported yet */
 		return -EINVAL;
 	}
+
+	dce_v6_0_set_display_funcs(adev);
+	dce_v6_0_set_irq_funcs(adev);
 
 	return 0;
 }
@@ -3121,12 +3121,12 @@ static const struct amdgpu_irq_src_funcs dce_v6_0_hpd_irq_funcs = {
 
 static void dce_v6_0_set_irq_funcs(struct amdgpu_device *adev)
 {
-	adev->crtc_irq.num_types = AMDGPU_CRTC_IRQ_LAST;
+	adev->crtc_irq.num_types = adev->mode_info.num_crtc;
 	adev->crtc_irq.funcs = &dce_v6_0_crtc_irq_funcs;
 
-	adev->pageflip_irq.num_types = AMDGPU_PAGEFLIP_IRQ_LAST;
+	adev->pageflip_irq.num_types = adev->mode_info.num_crtc;
 	adev->pageflip_irq.funcs = &dce_v6_0_pageflip_irq_funcs;
 
-	adev->hpd_irq.num_types = AMDGPU_HPD_LAST;
+	adev->hpd_irq.num_types = adev->mode_info.num_crtc;
 	adev->hpd_irq.funcs = &dce_v6_0_hpd_irq_funcs;
 }

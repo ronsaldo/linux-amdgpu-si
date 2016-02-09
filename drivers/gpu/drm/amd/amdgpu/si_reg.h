@@ -25,6 +25,10 @@
 
 #ifndef __SI_REG_H__
 
+#define TAHITI_GB_ADDR_CONFIG_GOLDEN        0x12011003
+#define VERDE_GB_ADDR_CONFIG_GOLDEN         0x12010002
+#define HAINAN_GB_ADDR_CONFIG_GOLDEN        0x02010001
+
 /* max cursor sizes (in pixels) */
 #define CURSOR_WIDTH 64
 #define CURSOR_HEIGHT 64
@@ -140,6 +144,58 @@
 #       define SI_ADDR_SURF_P8_32x32_16x16	 12
 #       define SI_ADDR_SURF_P8_32x32_16x32	 13
 #       define SI_ADDR_SURF_P8_32x64_32x32	 14
+
+/* Tile mode */
+#       define MICRO_TILE_MODE(x)				((x) << 0)
+#              define	ADDR_SURF_DISPLAY_MICRO_TILING		0
+#              define	ADDR_SURF_THIN_MICRO_TILING		1
+#              define	ADDR_SURF_DEPTH_MICRO_TILING		2
+#       define ARRAY_MODE(x)					((x) << 2)
+#              define	ARRAY_LINEAR_GENERAL			0
+#              define	ARRAY_LINEAR_ALIGNED			1
+#              define	ARRAY_1D_TILED_THIN1			2
+#              define	ARRAY_2D_TILED_THIN1			4
+#       define PIPE_CONFIG(x)					((x) << 6)
+#              define	ADDR_SURF_P2				0
+#              define	ADDR_SURF_P4_8x16			4
+#              define	ADDR_SURF_P4_16x16			5
+#              define	ADDR_SURF_P4_16x32			6
+#              define	ADDR_SURF_P4_32x32			7
+#              define	ADDR_SURF_P8_16x16_8x16			8
+#              define	ADDR_SURF_P8_16x32_8x16			9
+#              define	ADDR_SURF_P8_32x32_8x16			10
+#              define	ADDR_SURF_P8_16x32_16x16		11
+#              define	ADDR_SURF_P8_32x32_16x16		12
+#              define	ADDR_SURF_P8_32x32_16x32		13
+#              define	ADDR_SURF_P8_32x64_32x32		14
+#       define TILE_SPLIT(x)					((x) << 11)
+#              define	ADDR_SURF_TILE_SPLIT_64B		0
+#              define	ADDR_SURF_TILE_SPLIT_128B		1
+#              define	ADDR_SURF_TILE_SPLIT_256B		2
+#              define	ADDR_SURF_TILE_SPLIT_512B		3
+#              define	ADDR_SURF_TILE_SPLIT_1KB		4
+#              define	ADDR_SURF_TILE_SPLIT_2KB		5
+#              define	ADDR_SURF_TILE_SPLIT_4KB		6
+#       define BANK_WIDTH(x)					((x) << 14)
+#              define	ADDR_SURF_BANK_WIDTH_1			0
+#              define	ADDR_SURF_BANK_WIDTH_2			1
+#              define	ADDR_SURF_BANK_WIDTH_4			2
+#              define	ADDR_SURF_BANK_WIDTH_8			3
+#       define BANK_HEIGHT(x)					((x) << 16)
+#              define	ADDR_SURF_BANK_HEIGHT_1			0
+#              define	ADDR_SURF_BANK_HEIGHT_2			1
+#              define	ADDR_SURF_BANK_HEIGHT_4			2
+#              define	ADDR_SURF_BANK_HEIGHT_8			3
+#       define MACRO_TILE_ASPECT(x)				((x) << 18)
+#              define	ADDR_SURF_MACRO_ASPECT_1		0
+#              define	ADDR_SURF_MACRO_ASPECT_2		1
+#              define	ADDR_SURF_MACRO_ASPECT_4		2
+#              define	ADDR_SURF_MACRO_ASPECT_8		3
+#       define NUM_BANKS(x)					((x) << 20)
+#              define	ADDR_SURF_2_BANK			0
+#              define	ADDR_SURF_4_BANK			1
+#              define	ADDR_SURF_8_BANK			2
+#              define	ADDR_SURF_16_BANK			3
 
 /* registers taken from ni_reg.h*/
 #define mmNI_INPUT_GAMMA_CONTROL                         (0x6840 / 4)

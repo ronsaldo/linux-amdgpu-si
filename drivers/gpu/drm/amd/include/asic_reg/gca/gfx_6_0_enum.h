@@ -1,6 +1,15 @@
 #ifndef __GFX_6_0_ENUM_H__
 #define __GFX_6_0_ENUM_H__
 
+typedef enum VGT_CACHE_INVALIDATION {
+	VGT_CACHE_INVALIDATION__VC_ONLY                    = 0,
+	VGT_CACHE_INVALIDATION__TC_ONLY                    = 1,
+	VGT_CACHE_INVALIDATION__VC_AND_TC                  = 2,
+	VGT_CACHE_INVALIDATION__NO_AUTO                    = 0,
+	VGT_CACHE_INVALIDATION__ES_AUTO                    = 1,
+	VGT_CACHE_INVALIDATION__GS_AUTO                    = 2,
+	VGT_CACHE_INVALIDATION__ES_AND_GS_AUTO             = 3,
+} VGT_CACHE_INVALIDATION;
 typedef enum GB_TILE_MODE0 {
 	GB_TILE_MODE0__ADDR_SURF_DISPLAY_MICRO_TILING      = 0,
 	GB_TILE_MODE0__ADDR_SURF_THIN_MICRO_TILING         = 1,

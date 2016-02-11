@@ -21,7 +21,7 @@
  *
  */
  /* Driver code adapted from radeon kernel module by Ronie Salgado */
- 
+
 #include "drmP.h"
 #include "amdgpu.h"
 #include "amdgpu_ih.h"

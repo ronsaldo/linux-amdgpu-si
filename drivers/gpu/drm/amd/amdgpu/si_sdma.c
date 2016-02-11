@@ -970,7 +970,6 @@ static int si_dma_process_trap_irq(struct amdgpu_device *adev,
 				     struct amdgpu_iv_entry *entry)
 {
 	DRM_DEBUG("IH: DMA trap\n");
-	printk(KERN_ALERT "sdma trap\n");
 	if(entry->src_id == 224) {
 		amdgpu_fence_process(&adev->sdma.instance[0].ring);
 	}

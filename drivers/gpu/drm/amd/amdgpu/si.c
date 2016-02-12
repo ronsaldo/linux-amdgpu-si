@@ -212,6 +212,42 @@ static void si_uvd_ctx_wreg(struct amdgpu_device *adev, u32 reg, u32 v)
 	spin_unlock_irqrestore(&adev->uvd_ctx_idx_lock, flags);
 }
 
+/**
+ * amdgpu_program_register_sequence - program an array of registers.
+ *
+ * @adev: amdgpu_device pointer
+ * @registers: pointer to the register array
+ * @array_size: size of the register array
+ *
+ * Programs an array or registers with and and or masks.
+ * This is a helper for setting golden registers.
+ */
+static void si_program_register_sequence(struct amdgpu_device *adev,
+				      const u32 *registers,
+				      const u32 array_size)
+{
+	u32 tmp, reg, and_mask, or_mask;
+	int i;
+
+	if (array_size % 3)
+		return;
+
+	for (i = 0; i < array_size; i +=3) {
+		reg = registers[i + 0] >> 2;
+		and_mask = registers[i + 1];
+		or_mask = registers[i + 2];
+
+		if (and_mask == 0xffffffff) {
+			tmp = or_mask;
+		} else {
+			tmp = RREG32(reg);
+			tmp &= ~and_mask;
+			tmp |= or_mask;
+		}
+		WREG32(reg, tmp);
+	}
+}
+
 static const u32 tahiti_golden_rlc_registers[] =
 {
 	0xc424, 0xffffffff, 0x00601005,
@@ -1057,63 +1093,63 @@ static void si_init_golden_registers(struct amdgpu_device *adev)
 {
 	switch (adev->asic_type) {
 	case CHIP_TAHITI:
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 tahiti_golden_registers,
 						 (const u32)ARRAY_SIZE(tahiti_golden_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 tahiti_golden_rlc_registers,
 						 (const u32)ARRAY_SIZE(tahiti_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 tahiti_mgcg_cgcg_init,
 						 (const u32)ARRAY_SIZE(tahiti_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 tahiti_golden_registers2,
 						 (const u32)ARRAY_SIZE(tahiti_golden_registers2));
 		break;
 	case CHIP_PITCAIRN:
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 pitcairn_golden_registers,
 						 (const u32)ARRAY_SIZE(pitcairn_golden_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 pitcairn_golden_rlc_registers,
 						 (const u32)ARRAY_SIZE(pitcairn_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 pitcairn_mgcg_cgcg_init,
 						 (const u32)ARRAY_SIZE(pitcairn_mgcg_cgcg_init));
 		break;
 	case CHIP_VERDE:
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 verde_golden_registers,
 						 (const u32)ARRAY_SIZE(verde_golden_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 verde_golden_rlc_registers,
 						 (const u32)ARRAY_SIZE(verde_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 verde_mgcg_cgcg_init,
 						 (const u32)ARRAY_SIZE(verde_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 verde_pg_init,
 						 (const u32)ARRAY_SIZE(verde_pg_init));
 		break;
 	case CHIP_OLAND:
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 oland_golden_registers,
 						 (const u32)ARRAY_SIZE(oland_golden_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 oland_golden_rlc_registers,
 						 (const u32)ARRAY_SIZE(oland_golden_rlc_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 oland_mgcg_cgcg_init,
 						 (const u32)ARRAY_SIZE(oland_mgcg_cgcg_init));
 		break;
 	case CHIP_HAINAN:
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 hainan_golden_registers,
 						 (const u32)ARRAY_SIZE(hainan_golden_registers));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 hainan_golden_registers2,
 						 (const u32)ARRAY_SIZE(hainan_golden_registers2));
-		amdgpu_program_register_sequence(adev,
+		si_program_register_sequence(adev,
 						 hainan_mgcg_cgcg_init,
 						 (const u32)ARRAY_SIZE(hainan_mgcg_cgcg_init));
 		break;
